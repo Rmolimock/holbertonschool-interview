@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# this module prints useful log info every 10 lines received from stdin
 
 if __name__ == "__main__":
     from sys import stdin
@@ -15,7 +16,7 @@ if __name__ == "__main__":
                 status_codes[int(status)] += 1
             file_size += int(size)
             count += 1
-            if count % 10:
+            if count % 10 == 0:
                 print("File size: {}".format(file_size))
                 for code, value in sorted(status_codes.items()):
                     if value > 0:
