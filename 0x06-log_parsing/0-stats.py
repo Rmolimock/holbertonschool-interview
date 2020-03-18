@@ -14,7 +14,6 @@ if __name__ == "__main__":
             if int(status) in status_codes:
                 status_codes[int(status)] += 1
             file_size += int(size)
-            print("original: " + str(line))
             count += 1
             if count % 10:
                 print("File size: {}".format(file_size))
