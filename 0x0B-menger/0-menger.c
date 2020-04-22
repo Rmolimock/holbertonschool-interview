@@ -1,6 +1,6 @@
 #include "menger.h"
 /**
- * _char - selects for block or no block
+ * find_char - selects for block or no block
  * @col: column
  * @row: row
  * Return: '#' or ' '
