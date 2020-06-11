@@ -18,5 +18,3 @@ def rain(walls):
         else:
             space = True
     return water
-            
-#        print("after", left, right, space)
