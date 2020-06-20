@@ -1,7 +1,7 @@
 #include "search.h"
 
 /**
- * ls - perform a linear search through linked list
+ * helper - perform a linear search through linked list
  * @prev: starting node
  * @exp: ending node
  * @value: value being searched for
@@ -38,11 +38,12 @@ skiplist_t *linear_skip(skiplist_t *list, int value)
 	while (exp)
 	{
 		prev = exp;
-		if (!(exp->express)) {
-            while (exp->next)
+		if (!(exp->express))
+		{
+			while (exp->next)
 				exp = exp->next;
 			break;
-        }
+		}
 		else
 			exp = exp->express;
 		printf("Value checked at index [%li] = [%i]\n", exp->index, exp->n);
