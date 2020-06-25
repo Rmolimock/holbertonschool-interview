@@ -5,20 +5,21 @@
 /**
  * print_array - print an array of ints
  * @array: array to be printed
- * @size: size of the array
+ * @start: idx of start of subarray
+ * @end: idx of end of array
  *
  * Return: Void
  */
-void print_array(int *array, size_t size)
+void print_array(int *array, size_t start, size_t end)
 {
-	size_t i = 0;
+	size_t i = start;
 
 	printf("Searching in array: ");
-	while (i < size)
+	while (i < end)
 	{
-		if (i != 0)
-			printf(", ");
-		printf("%d", array[i]);
+		if (i != start)
+			printf(", %i", array[i]);
+		printf("%i", array[i]);
 		i++;
 	}
 	printf("\n");
@@ -27,30 +28,28 @@ void print_array(int *array, size_t size)
 /**
  * r_check - recursively search sorted array for first value
  * @array: the sorted array being searched through
- * @size: the size of array
  * @value: the value being searched for in array
- * @idx: idx of the current array pointer in original array
+ * @start: idx of the current array pointer in original array
+ * @end: idx of the end of the array relative to current
  * Return: the index of the first matching value
  */
-int r_check(int *array, size_t size, int value, int idx)
+int r_check(int *array, int value, int start, int end)
 {
-	int half = size / 2;
-	int *mid = array + half;
+	int half = ((end - start) / 2) + start;
 
-	if (!array)
-		return (-1);
-	else if (!half)
-		return (-1);
-	print_array(array, size);
+	print_array(array, start, end);
 	if (array[half] == value)
 	{
-		if ((half - 1) > idx && array[half - 1] == value)
-			return (r_check(array + idx, half, value, idx));
-		return (idx + half);
+		if (array[half - 1] != value)
+			return (half);
 	}
-	else if (value < array[half])
-		return (r_check(array, half, value, half));
-	return (r_check(mid, half, value, half + idx));
+	if (start == end)
+		return (-1);
+	else if (array[half] >= value)
+		return (r_check(array, value, start, half));
+	if (array[half] < value)
+		return (r_check(array, value, half + 1, end));
+	return (-1);
 }
 
 /**
@@ -62,15 +61,7 @@ int r_check(int *array, size_t size, int value, int idx)
  */
 int advanced_binary(int *array, size_t size, int value)
 {
-	int half = size / 2;
-	int *mid = array + half;
-
 	if (!array)
 		return (-1);
-	print_array(array, size);
-	if (value == array[half])
-		return (half);
-	else if (value < array[half])
-		return (r_check(array, half, value, 0));
-	return (r_check(mid, half, value, half));
+	return (r_check(array, value, 0, size - 1));
 }
