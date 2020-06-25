@@ -15,14 +15,12 @@ void print_array(int *array, size_t start, size_t end)
 	size_t i = start;
 
 	printf("Searching in array: ");
-	while (i < end)
+	for (i = start; i < end; i++)
 	{
-		if (i != start)
-			printf(", %i", array[i]);
 		printf("%i", array[i]);
-		i++;
+		printf(", ");
 	}
-	printf("\n");
+	printf("%i\n", array[i]);
 }
 
 /**
