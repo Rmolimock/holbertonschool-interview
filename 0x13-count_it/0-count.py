@@ -31,10 +31,11 @@ def recursive_query(subreddit, word_list, titles, after=''):
 def count_words(subreddit, word_list):
     """ Query the reddit api and return a count of given words """
     titles = recursive_query(subreddit, word_list, {})
-    if titles:
-        sorted_titles = sorted(titles.items(),
-                               key=lambda each: each[1],
-                               reverse=True)
-        for key, value in sorted_titles:
-            if value != 0:
-                print('{}: {}'.format(key, value))
+    if not titles:
+        return None
+    sorted_titles = sorted(titles.items(),
+                           key=lambda each: each[1],
+                           reverse=True)
+    for key, value in sorted_titles:
+        if value != 0:
+            print('{}: {}'.format(key, value))
