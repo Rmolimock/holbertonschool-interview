@@ -27,10 +27,10 @@ avl_t *helper(avl_t *p, int *ar, int stop, int position)
 }
 
 /**
- * sorted_array_to_avl - convert a sorted array into an AVL tree
- * @array: array to be sorted
- * @size: size of the array
- * Return: head of the tree on success, else NULL
+ * sorted_array_to_avl - AVL tree
+ * @array: to be sorted
+ * @size: size the array
+ * Return: AVL tree on success, or NULL
  */
 avl_t *sorted_array_to_avl(int *array, size_t size)
 {
