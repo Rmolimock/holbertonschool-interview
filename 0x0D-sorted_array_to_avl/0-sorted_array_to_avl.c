@@ -18,7 +18,7 @@ avl_t *helper(avl_t *p, int *ar, int stop, int position)
 	node = malloc(sizeof(avl_t));
 	if (node == NULL)
 		return (NULL);
-    half = (position + stop) / 2;
+	half = (position + stop) / 2;
 	node->n = ar[half];
 	node->parent = p;
 	node->left = helper(node, ar, half - 1, position);
