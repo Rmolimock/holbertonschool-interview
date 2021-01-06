@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-""" algo practive """
+""" this is an algo practice problem from holberton school """
 import requests
 
 
 def recursive_helper(subreddit, word_list, titles, after=''):
-    """ count given words """
+    """ recursive helper function to count given words """
     url = f'https://www.reddit.com/r/{subreddit}/hot.json?after={after}'
     response = requests.get(url,
                             headers={'User-agent': 'product'},
@@ -27,7 +27,7 @@ def recursive_helper(subreddit, word_list, titles, after=''):
 
 
 def count_words(subreddit, word_list):
-    """ count of given words in subreddit """
+    """ the count of given words in a subreddit """
     titles = recursive_helper(subreddit, word_list, {})
     if not titles:
         return None
