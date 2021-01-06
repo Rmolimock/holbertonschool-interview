@@ -1,39 +1,33 @@
 #!/usr/bin/python3
-""" this is an algo practice problem from holberton school """
+"""
+Count the number of appearances of keywords within reddit hot titles 
+"""
 import requests
+from collections import Counter, defaultdict
 
 
-def recursive_helper(subreddit, word_list, titles, after=''):
-    """ recursive helper function to count given words """
-    url = f'https://www.reddit.com/r/{subreddit}/hot.json?after={after}'
-    response = requests.get(url,
-                            headers={'User-agent': 'product'},
-                            allow_redirects=False)
-    if after is None:
-        return titles
-    if response.status_code != 200:
-        return None
-    for child in response.json().get('data').get('children'):
-        title_str = child.get('data').get('title').split()
-        for word in set(word_list):
-            if word.lower() in [x.lower() for x in title_str]:
-                if titles.get(word):
-                    titles[word] += 1
-                else:
-                    titles[word] = 1
-    after = response.json().get('data').get('after')
-    recursive_helper(subreddit, word_list, titles, after)
-    return titles
 
-
-def count_words(subreddit, word_list):
-    """ the count of given words in a subreddit """
-    titles = recursive_helper(subreddit, word_list, {})
-    if not titles:
-        return None
-    sort_titles = sorted(titles.items(),
-                         key=lambda each: each[1],
-                         reverse=True)
-    for key, value in sort_titles:
-        if value != 0:
-            print('{}: {}'.format(key, value))
+def count_words(subreddit, wordlist, count=None, after=None):
+    """
+    make a request to reddit hot titles and check number of appearances of keyword
+    """
+    url= 'https://www.reddit.com/r/{}/hot.json'
+    response = requests.get(
+            url.format(subreddit),
+            headers={'User-Agent': 'Mozilla/5.0'},
+            params={'after': after, 'limit': 100},
+            allow_redirects=False,
+        )
+    if response.status_code == 200:
+        data = response.json().get('data')
+        if not count:
+            count = defaultdict(int)
+        page = Counter(word for section in data.get('children') for word in section.get('data').get('title').casefold().split())
+        for each in wordlist:
+            if each.casefold() in page:
+                count[each.casefold()] += page.get(each.casefold())
+        if data.get('after'):
+            count_words(subreddit, wordlist, count, data.get('after'))
+        else:
+            for key, value in sorted(sorted(count.items(), key=lambda x: x[0]), key=lambda x: x[1], reverse=True):
+                print(f"{key}: {value}")
