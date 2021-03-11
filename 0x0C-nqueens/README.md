@@ -1,1 +1,1 @@
-# nqueens
+nqueens

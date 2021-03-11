@@ -1,65 +1,65 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 
 /**
- * print_array - print an array of ints
+ * ar_print - print array of integers
  * @array: array to be printed
- * @start: idx of start of subarray
- * @end: idx of end of array
+ * @idx: idx of subarray
+ * @stop: end of array
  *
  * Return: Void
  */
-void print_array(int *array, size_t start, size_t end)
+void ar_print(int *array, size_t idx, size_t stop)
 {
-	size_t i = start;
+	size_t k = idx;
 
 	printf("Searching in array: ");
-	for (i = start; i < end; i++)
+	for (k = idx; k < stop; k++)
 	{
-		printf("%i", array[i]);
+		printf("%i", array[k]);
 		printf(", ");
 	}
-	printf("%i\n", array[i]);
+	printf("%i\n", array[k]);
 }
 
 /**
- * r_check - recursively search sorted array for first value
- * @array: the sorted array being searched through
+ * helper - recursively search for first value
+ * @array: the array being searched
  * @value: the value being searched for in array
- * @start: idx of the current array pointer in original array
- * @end: idx of the end of the array relative to current
- * Return: the index of the first matching value
+ * @idx: current position
+ * @stop: where to stop
+ * Return: idx of first matching value
  */
-int r_check(int *array, int value, int start, int end)
+int helper(int *array, int idx, int stop, int value)
 {
-	int half = ((end - start) / 2) + start;
+	int mid = ((stop - idx) / 2) + idx;
 
-	print_array(array, start, end);
-	if (array[half] == value)
+	ar_print(array, idx, stop);
+	if (array[mid] == value)
 	{
-		if (array[half - 1] != value)
-			return (half);
+		if (array[mid - 1] != value)
+			return (mid);
 	}
-	if (start == end)
+	if (idx == stop)
 		return (-1);
-	else if (array[half] >= value)
-		return (r_check(array, value, start, half));
-	if (array[half] < value)
-		return (r_check(array, value, half + 1, end));
+	if (array[mid] < value)
+		return (helper(array, mid + 1, stop, value));
+	if (array[mid] >= value)
+		return (helper(array, idx, mid, value));
 	return (-1);
 }
 
 /**
- * advanced_binary - find the first matching value in a sorted array
- * @array: the sorted array being searched through
- * @size: the size of array
- * @value: the value being searched for in array
- * Return: the index of the first matching value
+ * advanced_binary - return first matching value in sorted array
+ * @array: array being searched
+ * @size: size of the array
+ * @value: value being searched for
+ * Return: index of the first matching value
  */
 int advanced_binary(int *array, size_t size, int value)
 {
-	if (!array)
-		return (-1);
-	return (r_check(array, value, 0, size - 1));
+	if (array)
+		return (helper(array, 0, size - 1, value));
+	return (-1);
 }

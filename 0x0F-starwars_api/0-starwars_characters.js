@@ -2,29 +2,25 @@
 
 const request = require('request');
 
-const requestEachCharacterName = (character_list, line) =>
-{
-  const num_characters = character_list.length
-  if (line === num_characters) return;
-  request(character_list[line], (er, response, body) =>
-  {
-    if (!er)
-    {
+const recHelper = (arr, i) => {
+  if (i === arr.length) return;
+  request(arr[i], (err, response, body) => {
+    if (!err) {
       console.log(JSON.parse(body).name);
-      requestEachCharacterName(character_list, line + 1);
-    } else
-    {
-      throw er;
+      recHelper(arr, i + 1);
+    } else {
+      throw err;
     }
   });
 };
 
-request(`https://swapi-api.hbtn.io/api/films/${process.argv[2]}`, (er, response, body) => {
-  if (!er)
-  {
-    requestEachCharacterName(JSON.parse(body).characters, 0);}
-  else
-  {
+const arg = process.argv[2];
+
+request(`https://swapi-api.hbtn.io/api/films/${arg}`, (er, res, body) => {
+  if (!er) {
+    const characters = JSON.parse(body).characters;
+    recHelper(characters, 0);
+  } else {
     throw er;
   }
 });

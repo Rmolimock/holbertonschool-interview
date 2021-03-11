@@ -1,56 +1,56 @@
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "holberton.h"
 
 /**
- * product_helper - print the product as an array
- * @product: array representing the product
- * @len: length of the array
+ * print - print the product
+ * @product: array containing the product
+ * @len: length of array
  */
-void product_helper(int *product, size_t len)
+void print(int *product, size_t len)
 {
-	size_t n;
+	size_t i;
 
-	if (len == 0 || product == NULL)
+	if (product == NULL || len == 0)
 	{
 		printf("0\n");
 		return;
 	}
-	for (n = *product ? 0 : 1; n < len; ++n)
-		printf("%i", product[n]);
+	for (i = *product ? 0 : 1; i < len; ++i)
+		printf("%i", product[i]);
 	putchar('\n');
 }
 
 /**
- * multiply - find product of two string representations of numbers
+ * multiply - get product of string representations of numbers
  * @product: array representing the product
- * @first: first string
- * @second: second string
- * @len_first: length of first string
- * @len_second: length of second string
+ * @f_len: length of the f string
+ * @s_len: length of the s string
+ * @f: f number
+ * @s: s number
  */
-void multiply(int *product, char *first, char *second, size_t len_first, size_t len_second)
+void multiply(int *product, size_t f_len, size_t s_len, char *f, char *s)
 {
-	int i, j, carry;
+	int i, k, carry;
 
-	for (i = len_first - 1; i > -1; --i)
-		for (j = len_second - 1; j > -1; --j)
+	for (i = f_len - 1; i > -1; --i)
+		for (k = s_len - 1; k > -1; --k)
 		{
-			carry = (first[i] - '0') * (second[j] - '0') + product[i + j + 1];
-			product[i + j + 1] = carry % 10;
-			product[i + j] += carry / 10;
+			carry = (s[k] - '0') * (f[i] - '0') + product[i + k + 1];
+			product[i + k + 1] = carry % 10;
+			product[i + k] += carry / 10;
 		}
 }
 
 /**
- * check_error - check for problems
- * @argc: number of arguments
- * @argv: main args - argv[0]
+ * error_check - check for errors
+ * @argc: number of args
+ * @argv: arguments
  *
- * Return: exits if error, else no return.
+ * Return: exit if error, else Void.
  */
-void check_error(int argc, char *argv[])
+void error_check(int argc, char *argv[])
 {
 	int a, b;
 
@@ -61,7 +61,7 @@ void check_error(int argc, char *argv[])
 	}
 	for (a = 0; argv[a] != NULL; ++a)
 		for (b = 0; argv[a][b]; ++b)
-			if (argv[a][b] > '9' || argv[a][b] < '0')
+			if (argv[a][b] < '0' || argv[a][b] > '9')
 			{
 				printf("Error\n");
 				exit(98);
@@ -69,31 +69,30 @@ void check_error(int argc, char *argv[])
 }
 
 /**
- * main - entry point.
- * @argc: number arguments
- * @argv: array of arguments
+ * main - entry point
+ * @argc: number of args
+ * @argv: array of args
  *
- * Return: 0 for success, else 1.
+ * Return: 0 for success, else 1
  */
 int main(int argc, char *argv[])
 {
-	size_t len_first, len_second;
+	size_t f_len, s_len;
 	int *product;
 
-	check_error(argc, argv + 1);
-	if ( *argv[2] == '0' || *argv[1] == '0')
+	error_check(argc, argv + 1);
+	if (*argv[1] == '0' || *argv[2] == '0')
 	{
-		product_helper(NULL, 0);
+		print(NULL, 0);
 		return (0);
 	}
-	len_first = strlen(argv[1]);
-	len_second = strlen(argv[2]);
-	product = calloc(len_first + len_second, sizeof(*product));
-	if (product) {
-		multiply(product, argv[1], argv[2], len_first, len_second);
-		product_helper(product, len_first + len_second);
-		free(product);
-		return (0);
-	}
-	return (1);
+	f_len = strlen(argv[1]);
+	s_len = strlen(argv[2]);
+	product = calloc(f_len + s_len, sizeof(*product));
+	if (!product)
+		return (1);
+	multiply(product, f_len, s_len, argv[1], argv[2]);
+	print(product, f_len + s_len);
+	free(product);
+	return (0);
 }

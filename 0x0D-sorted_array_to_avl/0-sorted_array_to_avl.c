@@ -1,41 +1,41 @@
 #include "binary_trees.h"
 
 /**
- * avl - recursive helper function to increase num of parameters available
- * @parent: parent of the current node
- * @array: array to be converted
- * @position: position of the (sometimes sub) array
- * @end: end of the array
+ * helper - recursive function
+ * @p: p of the current node
+ * @ar: array to be converted
+ * @position: position of ar
+ * @stop: end of ar
  * Return: new node
  */
-avl_t *avl(avl_t *parent, int *array, int position, int end)
+avl_t *helper(avl_t *p, int *ar, int stop, int position)
 {
-	avl_t *new;
+	avl_t *node;
 	int half;
 
-	if (position > end)
+	if (position > stop)
 		return (NULL);
-	half = (position + end) / 2;
-	new = malloc(sizeof(avl_t));
-	if (!new)
+	node = malloc(sizeof(avl_t));
+	if (node == NULL)
 		return (NULL);
-	new->n = array[half];
-	new->parent = parent;
-	new->left = avl(new, array, position, half - 1);
-	new->right = avl(new, array, half + 1, end);
-	return (new);
+	half = (position + stop) / 2;
+	node->n = ar[half];
+	node->parent = p;
+	node->left = helper(node, ar, half - 1, position);
+	node->right = helper(node, ar, stop, half + 1);
+	return (node);
 }
 
 /**
- * sorted_array_to_avl - convert a sorted array into an AVL tree
- * @array: array to be sorted
- * @size: size of the array
- * Return: head of the tree on success, else NULL
+ * sorted_array_to_avl - AVL tree
+ * @array: to be sorted
+ * @size: size the array
+ * Return: AVL tree on success, or NULL
  */
 avl_t *sorted_array_to_avl(int *array, size_t size)
 {
 
-	if (!array)
+	if (array == NULL)
 		return (NULL);
-	return (avl(NULL, array, 0, size - 1));
+	return (helper(NULL, array, size - 1, 0));
 }

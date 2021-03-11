@@ -3,9 +3,9 @@
 #include "sort.h"
 
 /**
- * _switch - _switchs ints
- * @a: integer to _switch
- * @b: integer to _switch
+ * _switch - switches integers
+ * @a: int to _switch
+ * @b: int to _switch
  */
 void _switch(int *a, int *b)
 {
@@ -15,45 +15,45 @@ void _switch(int *a, int *b)
 }
 
 /**
- * convert_into_heap - convert array into max heap
- * @array: an array of ints
- * @index: the current index of the arrau
- * @size: the size of the array
- * @len: boundaries
+ * convert - convert an array to max heap
+ * @array: array of integers
+ * @index: index of the array
+ * @len: lengt
+ * @size: size of the arraya
  */
-void convert_into_heap(int *array, int size, int index, int len)
+void convert(int *array, int size, int len, int index)
 {
 	int left = (index * 2) + 1;
 	int right = (index * 2) + 2;
 	int max = index;
 
-	if (array[left] > array[max] && left > 0 && left < len)
+	if (left > 0  && array[left] > array[max] && left < len)
 		max = left;
-	if (array[right] > array[max] && right > 0 && right < len)
+	if (right > 0 && array[right] > array[max] && right < len)
 		max = right;
 	if (max != index)
 	{
 		_switch(array + max, array + index);
 		print_array(array, size);
-		convert_into_heap(array, size, max, len);
+		convert(array, size, len, max);
 	}
 }
 /**
- * heap_sort - sort ints using a heap algo
- * @array: array of ints to be sorted
- * @size: size of array
+ * heap_sort - sort integers into max heap
+ * @array: array of integers
+ * @size: size of the array
  */
 void heap_sort(int *array, size_t size)
 {
 	int i;
-	int end = size - 1;
+	int last = size - 1;
 
 	for (i = (size / 2) - 1; i >= 0; i--)
-		convert_into_heap(array, size, i, size);
-	for (end = size - 1; end > 0; end--)
+		convert(array, size, size, i);
+	for (last = size - 1; last > 0; last--)
 	{
-		_switch(array + end, array);
+		_switch(array + last, array);
 		print_array(array, size);
-		convert_into_heap(array, size, 0, end);
+		convert(array, size, last, 0);
 	}
 }

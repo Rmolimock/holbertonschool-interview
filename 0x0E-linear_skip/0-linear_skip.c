@@ -1,13 +1,13 @@
 #include "search.h"
 
 /**
- * helper - perform a linear search through linked list
- * @prev: starting node
- * @exp: ending node
- * @value: value being searched for
- * Return: Node with value upon success, else None
+ * helper_func - linear skip list
+ * @value: value searching for
+ * @prev: start node
+ * @exp: end node
+ * Return: Node with value for success, else None
  */
-skiplist_t *helper(skiplist_t *prev, skiplist_t *exp, int value)
+skiplist_t *helper_func(int value, skiplist_t *prev, skiplist_t *exp)
 {
 	printf("Value found between indexes [%li] and [%li]\n",
 			prev->index, exp->index);
@@ -23,32 +23,32 @@ skiplist_t *helper(skiplist_t *prev, skiplist_t *exp, int value)
 }
 
 /**
- * linear_skip -  find value in a sorted skip list
- * @list: list being searched
- * @value: value being searched for
- * Return: node with value else None
+ * linear_skip -  find value in sorted skip list
+ * @list: list searched through
+ * @value: value searched for
+ * Return: node with value otherwise None
  */
 skiplist_t *linear_skip(skiplist_t *list, int value)
 {
-	skiplist_t *prev, *exp;
+	skiplist_t *prev, *tmp;
 
 	if (!list)
 		return (NULL);
-	exp = list;
-	while (exp)
+	tmp = list;
+	while (tmp)
 	{
-		prev = exp;
-		if (!(exp->express))
+		prev = tmp;
+		if (tmp->express)
+			tmp = tmp->express;
+		else
 		{
-			while (exp->next)
-				exp = exp->next;
+			while (tmp->next)
+				tmp = tmp->next;
 			break;
 		}
-		else
-			exp = exp->express;
-		printf("Value checked at index [%li] = [%i]\n", exp->index, exp->n);
-		if (exp->n >= value)
-			return (helper(prev, exp, value));
+		printf("Value checked at index [%li] = [%i]\n", tmp->index, tmp->n);
+		if (value <= tmp->n)
+			return (helper_func(value, prev, tmp));
 	}
-	return (helper(prev, exp, value));
+	return (helper_func(value, prev, tmp));
 }

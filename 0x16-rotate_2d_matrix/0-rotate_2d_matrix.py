@@ -1,22 +1,22 @@
 #!/usr/bin/python3
 """
-rotate matrix counter clockwise
+rotate a 2d matrix algorithm
 """
 
 
 def rotate_2d_matrix(matrix):
     """
-    rotate matrix counter clockwise
+    rotate a 2d matrix algorithm
     """
-    if not len(matrix) or len(matrix) != len(matrix[0]):
+    if not len(matrix) == len(matrix[0]) or not len(matrix):
         return
-    n = len(matrix)
-    for y in range(n // 2):
-        x, end, offset = y, n - 1 - y, 0
+    size = len(matrix)
+    for y in range(size // 2):
+        x, end, k = y, size - 1 - y, 0
         for i in range(x, end):
-            tmp = matrix[x][i]
-            matrix[x][i] = matrix[end - offset][x]
-            matrix[end - offset][x] = matrix[end][end - offset]
-            matrix[end][end - offset] = matrix[i][end]
-            matrix[i][end] = tmp
-            offset += 1
+            save = matrix[x][i]
+            matrix[x][i] = matrix[end - k][x]
+            matrix[end - k][x] = matrix[end][end - k]
+            matrix[end][end - k] = matrix[i][end]
+            matrix[i][end] = save
+            k += 1
