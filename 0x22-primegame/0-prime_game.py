@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ prime game """
 
+
 def helper(nums):
     """ helper """
     num = max(nums)
